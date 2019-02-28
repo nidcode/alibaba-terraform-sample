@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  validate:
+  apply:
     docker:
       - image: hashicorp/terraform
     steps:
@@ -10,11 +10,6 @@ jobs:
           name: Validate Terraform Formatting
           command: terraform fmt
           working_directory: product
-  plan:
-    docker:
-      - image: hashicorp/terraform
-    steps:
-      - checkout
       - run:
           name: Initialize Terraform
           command: terraform init
@@ -23,12 +18,13 @@ jobs:
           name: Plan Terraform
           command: terraform plan
           working_directory: product
+      - run:
+          name: Apply Terraform
+          command: terraform apply --auto-approve
+          working_directory: product
 
 workflows:
   version: 2
-  validate_and_deploy:
+  apply:
     jobs:
-      - validate
-      - plan:
-          requires:
-            - validate
+      - apply
