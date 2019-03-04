@@ -24,4 +24,24 @@ resource "alicloud_cs_kubernetes" "main" {
   service_cidr          = "172.21.0.0/20"
   install_cloud_monitor = true
   worker_disk_category  = "cloud_efficiency"
+
+  log_config {
+    type    = "SLS"
+    project = "${alicloud_log_project.main.name}"
+  }
+}
+
+resource "alicloud_log_project" "main" {
+  name        = "qu"
+  description = "create by terraform"
+}
+
+resource "alicloud_log_store" "main" {
+  project               = "${alicloud_log_project.main.name}"
+  name                  = "qu-logstore"
+  retention_period      = 3650
+  shard_count           = 3
+  auto_split            = true
+  max_split_shard_count = 60
+  append_meta           = true
 }
