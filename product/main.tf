@@ -37,13 +37,13 @@ resource "alicloud_cs_kubernetes" "main" {
 }
 
 resource "alicloud_log_project" "main" {
-  name        = "test"
+  name        = "senshin-test"
   description = "create by terraform"
 }
 
 resource "alicloud_log_store" "main" {
   project               = "${alicloud_log_project.main.name}"
-  name                  = "test-logstore"
+  name                  = "senshin-test-logstore"
   retention_period      = 3650
   shard_count           = 3
   auto_split            = true
